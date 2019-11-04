@@ -40,6 +40,9 @@ import scipy.stats as scs
 
 ```
 
+    ip
+    
+
 
 ```python
 conn = func.MyConn(filename= 'Northwind_small.sqlite')
@@ -67,7 +70,6 @@ df['LineTotal'] = df.UnitPrice* df.Quantity
 ```python
 columns = ['Quantity', 'LineTotal']
 df_customer = df.groupby('CustomerId')[columns].sum()
-
 df_customer = df_customer.rename(columns= {'LineTotal':'Revenue'})
 df_customer.head()
 ```
@@ -137,59 +139,18 @@ df_customer.head()
 
 ```python
 df_customer['Top20']= df_customer.Revenue >=df_customer.Revenue.quantile(.8)
-df_customer[] =df_binning(df_customer, 'Revenue', bins= 10, new_column_name= 'BinnedDiscount')
+
 ```
 
 
 ```python
-df_customer.groupby('Top20').sum()
+func.plotset(title='Total Revenue Comparing the Top 20% of Customers to Rest')
+df_customer.groupby('Top20').Revenue.sum().plot(kind='bar')
+plt.ylabel('Revenue ($)');
 ```
 
 
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Quantity</th>
-      <th>Revenue</th>
-    </tr>
-    <tr>
-      <th>Top20</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>False</th>
-      <td>21498</td>
-      <td>531870.50</td>
-    </tr>
-    <tr>
-      <th>True</th>
-      <td>29819</td>
-      <td>822588.09</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
+![png](question3_files/question3_8_0.png)
 
 
 
@@ -258,7 +219,7 @@ df_customer.loc[df_customer.Revenue >=df_customer.Revenue.quantile(.8)].Revenue.
 
 
 ```python
-func.plotset(title= 'Distribution of Sample Mean of Revenue by Customer');
+func.plotset(title= 'Distribution of Revenue by Customer');
 sns.distplot(df_customer.Revenue, label='All');
 sns.distplot(df_customer.loc[df_customer.Top20 == False].Revenue, color='green', label= 'Bottom 80%');
 sns.distplot(df_customer.loc[df_customer.Top20 == True].Revenue, color='blue', label= 'Top 20%', bins= 20);
@@ -346,13 +307,13 @@ print(func.shapiro_normal(Top20))
 
     Total
     normal
-    t 0.977672815322876, p 0.12825900316238403
+    t 0.9919248223304749, p 0.8658550977706909
     Bottom 80%
     normal
-    t 0.9854987859725952, p 0.5879389047622681
+    t 0.9912780523300171, p 0.9080270528793335
     Top 20%
     normal
-    t 0.9074409008026123, p 0.07755468785762787
+    t 0.9760728478431702, p 0.9007998704910278
     
 
 #### Test Analysis
@@ -364,15 +325,8 @@ The null hypothesis is that the tested distribution is normally distributed, and
 
 
 ```python
-scs.ttest_ind(Top20, total)
+
 ```
-
-
-
-
-    Ttest_indResult(statistic=31.68932297270785, pvalue=1.447544523130821e-55)
-
-
 
 #### Test analysis
 *Rejected the null hypothesis*(the sample means are identical)
@@ -388,7 +342,7 @@ effect_size
 
 
 
-    8.189805612322393
+    8.486736892804997
 
 
 
@@ -422,57 +376,39 @@ There a statistically significant difference in the mean revenue of the top 20 p
 
 
 ```python
-func.plotset(title= 'Total of Revenue of Top 20% of Customer and the Rest')
-#sns.barplot(df_customer.Top20, df_customer.Revenue);
-plt.barh(df_customer.Revenue, df_customer.Top20)
+a = round(df_customer.loc[df_customer.Top20 == True].Revenue.sum()/df_customer.Revenue.sum(), 4)*100
+
+func.plotset(title='Total Revenue Comparing the Top 20% of Customers to Rest')
+df_customer.groupby('Top20').Revenue.sum().plot(kind='bar')
+plt.ylabel('Revenue ($)');
+plt.show()
+print(f'{a}% of the Revenues are from the Top 20%')
 ```
 
 
+![png](question3_files/question3_29_0.png)
 
 
-    <BarContainer object of 89 artists>
+    60.73% of the Revenues are from the Top 20%
+    
 
-
-
-
-![png](question3_files/question3_29_1.png)
-
+Only 60.73% of the revenues come from the top 20 % , but it does show the importance on focusing on the 
 
 
 ```python
 !jupyter nbconvert --to markdown question3
 ```
 
-    [NbConvertApp] Converting notebook Question2.ipynb to markdown
-    [NbConvertApp] Support files will be in Question2_files\
-    [NbConvertApp] Making directory Question2_files
-    [NbConvertApp] Making directory Question2_files
-    [NbConvertApp] Making directory Question2_files
-    [NbConvertApp] Making directory Question2_files
-    [NbConvertApp] Writing 14155 bytes to Question2.md
+    [NbConvertApp] Converting notebook question3.ipynb to markdown
+    [NbConvertApp] Support files will be in question3_files\
+    [NbConvertApp] Making directory question3_files
+    [NbConvertApp] Making directory question3_files
+    [NbConvertApp] Making directory question3_files
+    [NbConvertApp] Making directory question3_files
+    [NbConvertApp] Writing 8206 bytes to question3.md
     
 
 
 ```python
-print(func.shapiro_normal(df_customer.loc[df_customer.BinnedDiscount == i].TotalSpent))
+
 ```
-
-
-    ---------------------------------------------------------------------------
-
-    AttributeError                            Traceback (most recent call last)
-
-    <ipython-input-97-74f1d299240d> in <module>()
-    ----> 1 print(func.shapiro_normal(df_customer.loc[df_customer.BinnedDiscount == i].TotalSpent))
-    
-
-    ~\.conda\envs\learn-env\lib\site-packages\pandas\core\generic.py in __getattr__(self, name)
-       4374             if self._info_axis._can_hold_identifiers_and_holds_name(name):
-       4375                 return self[name]
-    -> 4376             return object.__getattribute__(self, name)
-       4377 
-       4378     def __setattr__(self, name, value):
-    
-
-    AttributeError: 'DataFrame' object has no attribute 'BinnedDiscount'
-

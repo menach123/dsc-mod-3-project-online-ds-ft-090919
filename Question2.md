@@ -275,12 +275,21 @@ df_customer.head()
 
 ```python
 func.plotset(title= 'Customer Spending v. Overall Discount Level of Purchases')
-sns.scatterplot(x= 'Discount', y= 'TotalSpent', data= df_customer); 
-sns.scatterplot(x= 'Discount', y= 'TotalSpent', data= df_customer.loc[df_customer.Discount == 0], color= 'blue'); 
+sns.scatterplot(x= 'Discount', y= 'TotalSpent', data= df_customer, label='Customers with Discounts'); 
+sns.scatterplot(x= 'Discount', y= 'TotalSpent', data= df_customer.loc[df_customer.Discount == 0], label='Customers with No Discounts',
+                color= 'blue');
+plt.legend()
 ```
 
 
-![png](Question2_files/Question2_9_0.png)
+
+
+    <matplotlib.legend.Legend at 0x17ccf7aad68>
+
+
+
+
+![png](Question2_files/Question2_9_1.png)
 
 
 There seems to be a distinct difference between discounted and non discounted, see blue markers on the plot. 
@@ -371,21 +380,6 @@ plt.title('Distribution of Total Dollars Spent by Customer of \n Undiscounted Cu
 
 
 ![png](Question2_files/Question2_13_1.png)
-
-
-
-```python
-reload(func)
-```
-
-    ip
-    
-
-
-
-
-    <module 'function' from 'C:\\Users\\FlatIron_User\\DataScience\\mod3\\dsc-mod-3-project-online-ds-ft-090919\\function.py'>
-
 
 
 
@@ -493,7 +487,7 @@ for i in df_customer.BinnedDiscount.value_counts().index:
 ```
 
 
-![png](Question2_files/Question2_16_0.png)
+![png](Question2_files/Question2_15_0.png)
 
 
 
@@ -579,7 +573,7 @@ for i in df_customer.BinnedDiscount.value_counts().index:
 #### Test analysis
 The null hypothesis is that the tested distribution is normally distributed, and the alternative hypothesis is that the distribution is non-normal. A p values threshold is 0.05. 
 
-The p values for the bootstrap order data are below 0.05, so they are non normal. Bootstrapping will need to be use 
+The p values for the bootstrap order data are below 0.05, so they are non normal. Bootstrapping will need to be used.
 
 
 ```python
@@ -588,11 +582,12 @@ df_mean_sampling = func.df_bootstrapping(df_customer, 'TotalSpent', bin_column='
 
 
 ```python
+func.plotset(title='Distribution of Sample Means/n By Discount')
 sns.violinplot(x= 'BinnedValue', y= 'TotalSpent', data= df_mean_sampling);
 ```
 
 
-![png](Question2_files/Question2_22_0.png)
+![png](Question2_files/Question2_21_0.png)
 
 
 
@@ -611,10 +606,10 @@ for i in df_mean_sampling.BinnedValue.value_counts().index:
 
     NoDiscount
     normal
-    t 0.9752906560897827, p 0.6034384965896606
+    t 0.9774590730667114, p 0.6750807166099548
     (0.0, 0.211]
-    normal
-    t 0.9656100869178772, p 0.33439284563064575
+    non normal
+    t 0.932001531124115, p 0.03209429234266281
     
 
 #### Test analysis
@@ -632,7 +627,7 @@ func.levene_variances(df_mean_sampling.loc[df_mean_sampling.BinnedValue == 'NoDi
 
 ```
 
-    p = 3.056001881201966e-12
+    p = 6.410048139588829e-12
     Therefore the data do not have equal variances
     
 
@@ -657,7 +652,7 @@ scs.ttest_ind(df_mean_sampling.loc[df_mean_sampling.BinnedValue == 'NoDiscount']
 
 
 
-    Ttest_indResult(statistic=-32.755609711106366, pvalue=1.8205935764474964e-27)
+    Ttest_indResult(statistic=-35.08879750557038, pvalue=5.74737436467857e-29)
 
 
 
@@ -676,7 +671,7 @@ effect_size
 
 
 
-    7.830088368581164
+    8.387826929159804
 
 
 
@@ -711,27 +706,21 @@ print(df_customer.loc[df_customer.Discount != 0].TotalSpent.mean())
 
 
 ### Conclusion 
-There is statistical signficant difference in total dollars spent with customers that recieved discount and those that did not. There is a $19,886.88 positive increase the average of the non discounted customer to the discounted customers Among the discounted customer, there did not seem to be a signficant relationship between the indiv
+There is statistical signficant difference in total dollars spent with customers that recieved discount and those that did not. There is a $19,886.88 positive increase the average of the non discounted customer to the discounted customers Among the discounted customer, there did not seem to be a signficant relationship between the spent and the level of discounts. 
 
 
 ```python
-
+!jupyter nbconvert --to markdown Question2
 ```
 
-
-```python
-reload(func)
-```
-
-    ip
+    [NbConvertApp] Converting notebook Question2.ipynb to markdown
+    [NbConvertApp] Support files will be in Question2_files\
+    [NbConvertApp] Making directory Question2_files
+    [NbConvertApp] Making directory Question2_files
+    [NbConvertApp] Making directory Question2_files
+    [NbConvertApp] Making directory Question2_files
+    [NbConvertApp] Writing 14467 bytes to Question2.md
     
-
-
-
-
-    <module 'function' from 'C:\\Users\\FlatIron_User\\DataScience\\mod3\\dsc-mod-3-project-online-ds-ft-090919\\function.py'>
-
-
 
 
 ```python
