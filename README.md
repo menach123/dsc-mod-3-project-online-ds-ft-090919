@@ -1,94 +1,6 @@
 
 # Introduction
-This project examines the Northwind Sample database provided by Microsoft used for training purpose. We need ask 4 questions that require hypothesis testing to answer. Below is a diagram of database
-
-
-**Image using img tag**
-<!---you can put in images using an img tag--->
-<img src="Northwind_ERD_updated.png" width=80%>
-
-I am asking the following questions
-
-### [**Q1**: Does discount amount effect quantity sold?
-
-    - Test Used
-        - TUKEY Test
-    - Findings
-            There are statistical difference in the means of the discounted order quantity versus non discounted orders. Also there was not a significant difference among the different levels of discounted orders. These results indicate that having a discount has an effect on the quantity of the purchase, but the level of the discount does not seem to have effect after discount is applied.
-    
-### **Q2**: Does a customer's overall discount rate effect their total purchase amount?
-    - Test Used
-            - Independent Welch's TTest
-            - ANOVA
-            - TUKEY Test
-    - Findings
-
-
------
-
-## Question1
-<details> <summary> Q1 Information</summary>
-
-### Does discount amount have a statistically significant effect on the quantity of a product in an order? If so, at what level(s) of discount?
-
-**Gathering my data**
-
-```
-df = get_table(table='OrderDetail')
-df.head()
-```
-![](q1-df-head-01.png)
-
-
-**Split up data if it had a discount or not**
-```
-discounted_vals = df.loc[df['has_discount']>0, 'Quantity']
-non_discounted_vals = df.loc[df['has_discount']==0, 'Quantity']
-```
-
-**Compare Distributions and test for normality**
-![](question1_files/question1_11_0.png)
-
-```
-test_normality(discounted_vals)
-p = 6.88120409395894e-26
-Therefore the data is not normal
-
-test_normality(non_discounted_vals)
-p = 3.803856556577728e-34
-Therefore the data is not normal
-```
-</details>
-
-<details><summary>Q1 Strategy</summary>
-
-Given that this data is not normal, I needed to take sampling distributions. Doing this resulted in this distribution.
-
-![](question1_files/question1_22_0.png)
-
-</details>
-
-<details open><summary>Q1 Results/Conclusion</summary>
-
-### Results
-
-
-### Conclusion
-
-### Recommendations
-
-### Further Work
-</details>
-
-[Back to Introduction](#Introduction)
-
-
-```python
-
-```
-
-# Introduction
-This project examines the Northwind Sample database provided by Microsoft used for training purpose. We need ask 4 questions that require hypothesis testing to answer. Below is a diagram of database
+This project examines the Northwind Sample database provided by Microsoft used for training purpose. We need ask 4 questions that require hypothesis testing to answer. Below is a diagram of database.
 
 <!---you can put in images using an img tag--->
 <img src="Northwind_ERD_updated.png" width=80%>
@@ -99,7 +11,7 @@ I am asking the following questions
     <a href='question1.ipynb'>Question 1</a>
     
 -**Does a customer's overall discount rate effect their total purchase amount?**
-    <a hef='Question2.ipynb'>Question 2</a>
+<a hef='Question2.ipynb'>Question 2</a>
 
 -**Does the Northwind Customer database conform to the 80/20 rule? 80% of your sales is accounted for by 20% of your customers.**
     <a href='question3.ipynb'>Question 3</a>
