@@ -277,6 +277,31 @@ plt.legend();
 
 
 ```python
+plt.figure(figsize=figsize);
+columns = ['Quantity', 'LineTotal', 'StandardAmount', 'Discount']
+A = df.groupby('Id')[columns].sum()
+
+A.head()
+```
+
+
+    ---------------------------------------------------------------------------
+
+    NameError                                 Traceback (most recent call last)
+
+    <ipython-input-1-d3ac3f9622b7> in <module>()
+    ----> 1 plt.figure(figsize=figsize);
+          2 columns = ['Quantity', 'LineTotal', 'StandardAmount', 'Discount']
+          3 A = df.groupby('Id')[columns].sum()
+          4 
+          5 A.head()
+    
+
+    NameError: name 'plt' is not defined
+
+
+
+```python
 orders_with_discount.Discount = (orders_with_discount.StandardAmount- orders_with_discount.LineTotal)/ orders_with_discount.StandardAmount 
 df_orders = orders_with_discount.append(orders_with_no_discount)
 hist, bin_edge = np.histogram(df_orders.Discount, bins= 3)
@@ -312,7 +337,7 @@ sns.violinplot(x='Quantity', y= 'BinnedDiscount', data= df_orders);
 ```
 
 
-![png](question1_files/question1_13_0.png)
+![png](question1_files/question1_14_0.png)
 
 
 #### Check for normality- Sharpio-Welk test
@@ -425,7 +450,7 @@ for i in df_orders.BinnedDiscount.value_counts().index:
 ```
 
 
-![png](question1_files/question1_22_0.png)
+![png](question1_files/question1_23_0.png)
 
 
 #### Check for normality- Sharpio-Welk test
@@ -439,16 +464,16 @@ for i in df_orders.BinnedDiscount.value_counts().index:
 
     No Discount
     normal
-    t 0.9924347400665283, p 0.9050273895263672
+    t 0.989066481590271, p 0.6916583776473999
     (0.0833, 0.167]
     normal
-    t 0.9831403493881226, p 0.3255539536476135
+    t 0.9910159707069397, p 0.8244869709014893
     (0.167, 0.25]
     normal
-    t 0.982770562171936, p 0.3085521161556244
+    t 0.9828118085861206, p 0.31041231751441956
     (0.0, 0.0833]
     normal
-    t 0.986225962638855, p 0.4969947636127472
+    t 0.9735333919525146, p 0.0743236392736435
     
 
 #### Test analysis
@@ -473,15 +498,15 @@ for i in df_orders.BinnedDiscount.value_counts().index:
     Therefore the data have equal variances
     True
     No Discount compared to (0.0833, 0.167]
-    p = 3.502923887293742e-06
+    p = 2.3624068890208353e-08
     Therefore the data do not have equal variances
     False
     No Discount compared to (0.167, 0.25]
-    p = 5.99797771714921e-07
+    p = 1.4940850533393439e-09
     Therefore the data do not have equal variances
     False
     No Discount compared to (0.0, 0.0833]
-    p = 1.321440131263909e-08
+    p = 2.2265026744071246e-09
     Therefore the data do not have equal variances
     False
     
@@ -503,11 +528,11 @@ for i in df_orders.BinnedDiscount.value_counts().index:
     No Discount compared to No Discount
     0.0
     No Discount compared to (0.0833, 0.167]
-    3.7601515099983023
+    4.1383338433632
     No Discount compared to (0.167, 0.25]
-    4.309178544354231
+    4.19711479560407
     No Discount compared to (0.0, 0.0833]
-    3.108343242404973
+    3.6021057606810687
     
 
 There is a fairly large effect size for No Discount versus no discount.
@@ -521,6 +546,7 @@ mc = MultiComparison(df_means.Quantity, df_means.BinnedValue)
 result = mc.tukeyhsd()
 result_df = pd.DataFrame(data=result._results_table.data[1:], columns=result._results_table.data[0])
 result_df
+
 ```
 
 
@@ -557,54 +583,54 @@ result_df
       <th>0</th>
       <td>(0.0, 0.0833]</td>
       <td>(0.0833, 0.167]</td>
-      <td>0.0301</td>
-      <td>-1.5128</td>
-      <td>1.5731</td>
+      <td>-0.5406</td>
+      <td>-2.0713</td>
+      <td>0.9900</td>
       <td>False</td>
     </tr>
     <tr>
       <th>1</th>
       <td>(0.0, 0.0833]</td>
       <td>(0.167, 0.25]</td>
-      <td>1.4900</td>
-      <td>-0.0529</td>
-      <td>3.0329</td>
+      <td>0.1985</td>
+      <td>-1.3321</td>
+      <td>1.7292</td>
       <td>False</td>
     </tr>
     <tr>
       <th>2</th>
       <td>(0.0, 0.0833]</td>
       <td>No Discount</td>
-      <td>-11.9985</td>
-      <td>-13.5415</td>
-      <td>-10.4556</td>
+      <td>-13.2199</td>
+      <td>-14.7506</td>
+      <td>-11.6893</td>
       <td>True</td>
     </tr>
     <tr>
       <th>3</th>
       <td>(0.0833, 0.167]</td>
       <td>(0.167, 0.25]</td>
-      <td>1.4599</td>
-      <td>-0.0830</td>
-      <td>3.0028</td>
+      <td>0.7392</td>
+      <td>-0.7915</td>
+      <td>2.2698</td>
       <td>False</td>
     </tr>
     <tr>
       <th>4</th>
       <td>(0.0833, 0.167]</td>
       <td>No Discount</td>
-      <td>-12.0287</td>
-      <td>-13.5716</td>
-      <td>-10.4858</td>
+      <td>-12.6793</td>
+      <td>-14.2099</td>
+      <td>-11.1486</td>
       <td>True</td>
     </tr>
     <tr>
       <th>5</th>
       <td>(0.167, 0.25]</td>
       <td>No Discount</td>
-      <td>-13.4886</td>
-      <td>-15.0315</td>
-      <td>-11.9457</td>
+      <td>-13.4185</td>
+      <td>-14.9491</td>
+      <td>-11.8878</td>
       <td>True</td>
     </tr>
   </tbody>
@@ -640,7 +666,7 @@ There is a 13.1 quantity increase in the quantity with a discount.
     [NbConvertApp] Making directory question1_files
     [NbConvertApp] Making directory question1_files
     [NbConvertApp] Making directory question1_files
-    [NbConvertApp] Writing 13281 bytes to question1.md
+    [NbConvertApp] Writing 13658 bytes to question1.md
     
 
 
